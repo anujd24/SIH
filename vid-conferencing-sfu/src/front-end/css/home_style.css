@@ -1,183 +1,201 @@
 /* Base styles (applies to all devices) */
 body {
-    margin: 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: #171b20;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #171b20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .container {
-    height: 88vh;
-    width: 35vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    border-radius: 10px;
-    padding: 20px;
-    position: relative;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
 }
 
 .header {
-    text-align: center;
-    margin-bottom: 5px;
+  text-align: center;
+  margin-bottom: 5px;
 }
 
 .header h1 {
-    font-size: 2.5rem;
-    margin: 0;
+  font-size: 2.5rem;
+  margin: 0;
 }
 
 .header p {
-    font-size: 0.875rem;
-    color: #acacb7;
+  font-size: 0.875rem;
+  color: #acacb7;
 }
 
 .video-container {
-    border: 2px solid #df1818;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    width: 100%;
-    background-color: black;
-    border-radius: 10px;
-    height: 70%;
+  border: 2px solid #df1818;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  background-color: black;
+  border-radius: 10px;
+  height: 70%;
 }
 
 video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-    transform: scaleX(-1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  transform: scaleX(-1);
 }
 
 .form-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-container textarea {
-    width: 28vw;
-    height: 4vh;
-    border-radius: 5px;
-    text-align: center;
-    color: #eff1fb;
-    background-color: #191b23;
-    border: 2px solid #2572ed;
-    padding: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    resize: none;
+  width: 28vw;
+  height: 4vh;
+  border-radius: 5px;
+  text-align: center;
+  color: #eff1fb;
+  background-color: #191b23;
+  border: 2px solid #2572ed;
+  padding: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  resize: none;
 }
 
 .form-container button {
-    background-color: #2572ed;
-    width: 7vw;
-    height: 5vh;
-    text-align: center;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #2572ed;
+  width: 7vw;
+  height: 5vh;
+  text-align: center;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .icons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .icons svg {
-    fill: #ffffff;
+  fill: #ffffff;
 }
 
 /* Media Queries */
 
 /* For tablets and small laptops (min-width: 768px) */
 @media (max-width: 1024px) {
-    .container {
-        width: 80vw;
-    }
+  .container {
+    width: 80vw;
+  }
 
-    .header h1 {
-        font-size: 2rem;
-    }
+  .header h1 {
+    font-size: 2rem;
+  }
 
-    .header p {
-        font-size: 0.75rem;
-    }
-    
+  .header p {
+    font-size: 0.75rem;
+  }
 
-    .form-container textarea {
-        width: 70vw;
-        height: 5vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        justify-items: center;
-        text-align: center;
-        vertical-align: middle
-    }
+  .form-container textarea {
+    width: 70vw;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+    vertical-align: middle;
+  }
 
-    .form-container button {
-        width: 10vw;
-        height: 6vh;
-    }
+  .form-container button {
+    width: 10vw;
+    height: 6vh;
+  }
 }
 
 /* For mobile devices (min-width: 480px) */
 @media (max-width: 480px) {
-    .container {
-        width: 90vw;
-        height: auto;
-        padding: 10px;
-    }
+  .container {
+    width: 90vw;
+    height: auto;
+    padding: 10px;
+  }
 
-    .header h1 {
-        font-size: 1.5rem;
-    }
+  .header h1 {
+    font-size: 1.5rem;
+  }
 
-    .header p {
-        font-size: 0.625rem;
-    }
+  .header p {
+    font-size: 0.625rem;
+  }
 
-    .video-container {
-        height: 50%;
-    }
-    .form-container{
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2vh;
-        margin-top: 5vh;
-       
-    }
+  .video-container {
+    height: 50%;
+  }
+  .form-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
+    margin-top: 5vh;
+  }
 
-    .form-container textarea {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        justify-items: center;
-        width: 90vw;
-        height: 3vh;
-        font-size: larger;
-    }
+  .form-container textarea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    width: 90vw;
+    height: 3vh;
+    font-size: larger;
+  }
 
-    .form-container button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        justify-items: center;
-        width: 30vw;
-        height: 5vh;
-    }
+  .form-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    width: 30vw;
+    height: 5vh;
+  }
+}
+
+.calendly-container{
+  width: 100%;
+  height: 100vh;
+  background-color: red;
+}
+
+.btn {
+  border-radius: 20px;
+  background-color: #2572ed;
+}
+
+#schedule_form {
+  background-color: red;
+}
+
+.calendly-inline-widget {
+  width: 100%;
+  height:100vh;
 }

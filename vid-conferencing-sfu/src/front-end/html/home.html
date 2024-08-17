@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+   <link rel="stylesheet" href="home_style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Get Started</h1>
+            <p>Setup your video and audio before joining</p>
+        </div>
+        <div class="video-container">
+            <video id="userVideo" autoplay></video>
+        </div>
+        <div class="icons">
+            <svg id="mic" fill="#FFFFFF" width="24px" height="24px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                <path d="M960.315 96.818c-186.858 0-338.862 152.003-338.862 338.861v484.088c0 186.858 152.004 338.862 338.862 338.862 186.858 0 338.861-152.004 338.861-338.862V435.68c0-186.858-152.003-338.861-338.861-338.861M427.818 709.983V943.41c0 293.551 238.946 532.497 532.497 532.497 293.55 0 532.496-238.946 532.496-532.497V709.983h96.818V943.41c0 330.707-256.438 602.668-580.9 627.471l-.006 252.301h242.044V1920H669.862v-96.818h242.043l-.004-252.3C587.438 1546.077 331 1274.116 331 943.41V709.983h96.818ZM960.315 0c240.204 0 435.679 195.475 435.679 435.68v484.087c0 240.205-195.475 435.68-435.68 435.68-240.204 0-435.679-195.475-435.679-435.68V435.68C524.635 195.475 720.11 0 960.315 0Z" fill-rule="evenodd"/>
+            </svg>
+            <svg id="camera" fill="#FFFFFF" width="24px" height="24px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4.5" y="11.44" width="28.3" height="25.12" rx="2.49"/>
+                <path d="M32.8,27.71l8.32,7.37A1.43,1.43,0,0,0,43.5,34V14a1.43,1.43,0,0,0-2.38-1.07L32.8,20.29"/>
+            </svg>
+        </div>
+        <div class="form-container">
+            <textarea id="roomNumber" placeholder="Enter Room No." required></textarea>
+            <button id="join-now-button">Join Now</button>
+        </div>
+    </div>
+
+    <script>
+    
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                const video = document.getElementById('userVideo');
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing media devices.', error);
+            });
+
+        // Handle form submission
+        document.getElementById('join-now-button').addEventListener('click', function() {
+            const roomNumber = document.getElementById('roomNumber').value;
+            if (roomNumber) {
+                window.location.href = `/room/${roomNumber}`; // Redirect to new page with room number
+            }
+        });
+
+        document.getElementById('roomNumber').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const roomNumber = document.getElementById('roomNumber').value;
+                if (roomNumber) {
+                    window.location.href = `/room/${roomNumber}`;
+                }
+              
+                event.preventDefault();
+            }
+        });
+
+    </script>
+</body>
+</html>

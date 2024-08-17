@@ -1,0 +1,22 @@
+{
+  "name": "vid-conferencing-final",
+  "version": "1.0.0",
+  "main": "src/server/server.js",
+  "scripts": {
+    "start": "node src/server/server.js",
+    "watch": "watchify src/front-end/client-side-script/client.js -o src/front-end/client-side-script/bundle.js -v"
+  },
+  "author": "akhilesh-bhadula",
+  "license": "ISC",
+  "type": "module",
+  "description": "",
+  "dependencies": {
+    "downloadjs": "^1.4.7",
+    "express": "^4.19.2",
+    "httpolyglot": "^0.1.2",
+    "mediasoup": "^3.14.11",
+    "mediasoup-client": "^3.7.16",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
+  }
+}

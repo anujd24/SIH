@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "ubuntu-linux-final"
+    restart: always
+    ports:
+      - "3000:3000"
+      - "2000-2050:2000-2050"
+      - "10000-10100:10000-10100"
+    tty: true

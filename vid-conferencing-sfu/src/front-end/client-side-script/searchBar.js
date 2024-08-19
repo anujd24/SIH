@@ -2,7 +2,7 @@ function debouncedPopulateDiv(){
     clearTimeout(timeOut);
     const timeOut= setTimeout(function(){
         populateDiv();
-    },100); 
+    },2000); 
 }
 
 function populateDiv(){

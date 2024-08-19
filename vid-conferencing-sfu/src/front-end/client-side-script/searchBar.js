@@ -1,4 +1,6 @@
+let timeOut;
 function debouncedPopulateDiv(){
+    
     clearTimeout(timeOut);
     const timeOut= setTimeout(function(){
         populateDiv();

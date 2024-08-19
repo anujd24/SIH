@@ -1,9 +1,9 @@
 const express = require('express');
 const zod = require("zod");
 const { User } = require("../config/Mongooseconnection");
-const  { authMiddleware } = require("../middleware");
+const  { authMiddleware } = require("../middleware/Middleware");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config");
+const { JWT_SECRET } = require("../utils/generateToken");
 
 const router = express.Router();
 

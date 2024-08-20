@@ -18,11 +18,15 @@ const __dirname = path.resolve()  //absolute path of the current working directo
 
 app.use(express.static(path.join(__dirname))); //to serve static files
 
-app.get('/', (req, res) => {
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname,'landing.html'));
+// });
+app.get('/sign-in', (req, res) => {
+  res.sendFile(path.join(__dirname,'sign-in.html'));
+});
+app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname,'home.html'));
 });
-
-
 app.get('/room/:roomNumber', (req, res) => {
     res.sendFile(path.join(__dirname, 'room.html'));
 });
@@ -38,6 +42,59 @@ const io = new Server(httpsServer) //initializing the new socket.io instance and
 
 
 const connections = io.of('/vidCalling') //using namespace "vidCalling" to connect with client and have a seperate channel to facilitate video calling with client
+
+//<-------------------------------------code for polling -------------------------------------------------->
+
+const pollingNamespace = io.of('/polling');
+let polls = {}; // Store polls in-memory (consider using a database for persistence)
+let userVotes = {}; // Store user votes globally
+pollingNamespace.on('connection', (socket) => {
+  console.log('A user connected to the polling namespace');
+
+  // Send initial polls to the client
+  socket.emit('initialPolls', Object.values(polls));
+
+  // Handle creating a poll
+  socket.on('createPoll', (poll) => {
+    console.log('Poll created:', poll);
+    polls[poll.id] = poll;
+    pollingNamespace.emit('newPoll', poll);
+  });
+
+  // Handle voting
+  socket.on('vote', (data) => {
+    console.log('Vote received:', data);
+
+    const poll = polls[data.pollId];
+    if (!poll) return;
+
+    // Remove user's previous vote if they had one
+    if (userVotes[socket.id] && userVotes[socket.id][data.pollId]) {
+      const previousOption = userVotes[socket.id][data.pollId];
+      if (poll.votes[previousOption] > 0) {
+        poll.votes[previousOption]--;
+      }
+    }
+
+    // Update the vote
+    poll.votes[data.option] = (poll.votes[data.option] || 0) + 1;
+
+    // Track user's new vote
+    if (!userVotes[socket.id]) {
+      userVotes[socket.id] = {};
+    }
+    userVotes[socket.id][data.pollId] = data.option;
+
+    pollingNamespace.emit('updatePoll', poll);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected from the polling namespace');
+    delete userVotes[socket.id]; // Clean up user votes on disconnect
+  });
+});
+
+
 
 
 
@@ -85,6 +142,7 @@ io.of('/chat').on('connection', (socket) => {
   });
 });
 
+//<---------------------------------following mediasoup architecture--------------------------------------->
 
 let worker
 let rooms = {}          
@@ -93,7 +151,7 @@ let transports = []
 let producers = []      
 let consumers = []     
 
-//following mediaosoup-architecture from here
+
 
 // creating function to create worker
 const createWorker = async () => {
@@ -226,18 +284,18 @@ connections.on('connection', async socket => {
   
 
 
-  socket.on('createWebRtcTransport', async ({ consumer }, callback) => {
+  socket.on('createWebRtcTransport', async ({ consumer }, callback) => {  //received event from client and info about consumer 
     
-    const roomName = peers[socket.id].roomName
+    const roomName = peers[socket.id].roomName  //getting room from socket id of peer
 
-    const router = rooms[roomName].router
+    const router = rooms[roomName].router       //getting router from rooms this will help us to handle streams in particular room
 
 
     createWebRtcTransport(router).then(
       transport => {
         callback({
           params: {
-            id: transport.id,
+            id: transport.id,                     //unique id of each transport
             iceParameters: transport.iceParameters,
             iceCandidates: transport.iceCandidates,
             dtlsParameters: transport.dtlsParameters,
@@ -245,13 +303,15 @@ connections.on('connection', async socket => {
         })
 
       
-        addTransport(transport, roomName, consumer)
+        addTransport(transport, roomName, consumer) //adding info about newly created transport to the server's data with its room name and whether it is being used for consumer or not
       },
       error => {
         console.log(error)
       })
   })
 
+
+  //defining a function to add all details about a newly created transport in server
   const addTransport = (transport, roomName, consumer) => {
 
     transports = [
@@ -327,6 +387,7 @@ connections.on('connection', async socket => {
     })
   }
 
+  ////gets the transport object ass. with the socket id
   const getTransport = (socketId) => {
     const [producerTransport] = transports.filter(transport => transport.socketId === socketId && !transport.consumer)
     return producerTransport.transport
@@ -336,7 +397,7 @@ connections.on('connection', async socket => {
   socket.on('transport-connect', ({ dtlsParameters }) => {
     console.log('DTLS PARAMS... ', { dtlsParameters })
     
-    getTransport(socket.id).connect({ dtlsParameters })
+    getTransport(socket.id).connect({ dtlsParameters })  //gets the transport object ass. with the socket id and then complete the connection process of WebRTC using coonect method of mediasoup
   })
 
 
@@ -450,7 +511,7 @@ const createWebRtcTransport = async (router) => {
         listenIps: [
           {
             ip: '0.0.0.0',
-             announcedIp: '192.168.1.5',
+             announcedIp: '192.168.1.8',
           }
         ],
         enableUdp: true,

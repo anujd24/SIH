@@ -7,8 +7,94 @@
 
     <!-- Inline CSS -->
     <style>
-        /* Global Styles */
+#input-container{
+    display: flex;
+    flex-direction: column;
+    height: 24vh;
+    display: flex;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#poll-render{
+    height: 50vh;
+    overflow-y: auto;
+}
+/* Global Styles */
+
+        /* Chat container */
+#chat-box {
+    background-color: #1e272e; /* Dark background for chat box */
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 60vh; /* Adjust height as needed */
+    margin-bottom: 1rem;
+}
+
+/* Individual chat message */
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+/* Sender message bubble */
+.sender-message {
+    background-color: #00a884; /* WhatsApp-like green */
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 20px;
+    max-width: 80%; /* Adjust width as needed */
+    align-self: flex-end;
+    margin-left: auto;
+    position: relative;
+}
+
+/* Receiver message bubble */
+.receiver-message {
+    background-color: #333; /* Dark grey */
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 20px;
+    max-width: 80%; /* Adjust width as needed */
+    position: relative;
+}
+
+/* Message bubble triangle */
+.message-triangle {
+    position: absolute;
+    bottom: 100%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+}
+
+/* Sender triangle */
+.sender-message .message-triangle {
+    border-bottom-color: #00a884; /* Same as sender bubble */
+    left: 15px; /* Position triangle at the right end */
+    border-width: 10px 10px 0 10px;
+}
+
+/* Receiver triangle */
+.receiver-message .message-triangle {
+    border-bottom-color: #333; /* Same as receiver bubble */
+    right: 15px; /* Position triangle at the left end */
+    border-width: 10px 10px 0 10px;
+}
+
+/* Message timestamp */
+.message-timestamp {
+    font-size: 0.75rem;
+    color: #b2b2b2;
+    margin-top: 0.25rem;
+}
+
+
         body {
+            overflow: hidden;
             margin: 0;
             font-family: Arial, sans-serif;
             color: white;
@@ -115,6 +201,15 @@
             border-radius: 0.8rem;
         }
 
+        #screen-share-button{
+            background-color: #fc5d5d;
+            height: 8vh;
+            width: 5vw;
+            display: flex;
+            align-items: center;
+            border-radius: 0.8rem;
+        }
+
         #end-call-icon {
             width: 5vw;
             height: 5vh;
@@ -122,10 +217,13 @@
 
         #right-screen {
             width: 25vw;
-            height: 100vh;
+            height: 99vh;
             background-color: #1e272e;
             border-radius: 65px;
             margin: 2px;
+            margin-right: 0.5vw;
+            margin-top: 0.5vh;
+            margin-bottom: 0.5vh;
         }
 
         #tabs {
@@ -144,6 +242,8 @@
             color: #1ae9e2;
         }
 
+        
+
         #polling {
             display: flex;
             flex-direction: column;
@@ -152,47 +252,50 @@
             margin-left: 10px;
         }
 
-        #poll-title {
-            color: #aeb3b5;
-            font-size: medium;
-        }
-
-        #poll-question {
-            color: #0ef4e4;
-        }
-
-        #poll-option {
-            width: 95%;
-            border: 2px solid #0ef4e4;
-            height: 5vh;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-        }
-
-        #poll-option span {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 3px solid white;
-            background-color: transparent;
-            margin-left: 10px;
-        }
-
-        #poll-option p {
+       
+        .focus-input {
+            background-color: #1e272e;
             color: white;
-            margin-left: 10px;
-            text-transform: capitalize;
+            padding: 1px;
+            height: 5vh;
+            width: 20vw;
+            border: none;
+            border-bottom: 2px solid #969997;
+            border-radius: 0;
+            outline: none;
         }
 
-        .hidecontent {
-            display: none;
-        }
+        .focus-input:focus {
+        border-bottom:2px solid #00ff6a; /* Change border color on focus */
+    }
 
-        .viewContent {
-            display: flex;
-        }
+    * {
+    scrollbar-width: thin; /* Makes the scrollbar thinner */
+    scrollbar-color: #00ff6a #2b3842; /* Handle color and track color */
+}
+
+.poll {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  background-color: #1e272e;
+}
+
+.vote-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.vote-button:hover {
+  background-color: #0056b3;
+}
+
+
     </style>
 
 </head>
@@ -200,9 +303,7 @@
     <div id="maindiv">
         <div id="left-screen">
             <div id="top">
-                <div>
-                    <h5 id="left-heading">Go to this link and enter room number to join another participants</h5>
-                </div>
+               
                 <div>
                     <h1 id="room">Room No - </h1>
                 </div>
@@ -216,9 +317,15 @@
                 </div>
 
                 <div id="end-call-section">
-                    <button id="end-call-button">
+                    
+                    <!-- <button id="end-call-button">
                         <img id="end-call-icon" src="end-call-svgrepo-com.svg" alt="" />
+                    </button> -->
+
+                    <button id="screen-share-button">
+                        share-screen
                     </button>
+
                 </div>
             </div>
         </div>
@@ -228,26 +335,237 @@
                 <div id="polls" class="tab active">Polls</div>
                 <div id="chat" class="tab">Chat</div>
             </div>
-            <div id="polling">
-                <h2 id="poll-title">Poll</h2>
+            <div >
+                <!-- this is polling block-->
+                <div  id="polling">
 
-                <div id="chat-container" style="position: absolute; bottom: 10px; right: 0; padding: 1rem;">
-                    <div id="chat-box" style="height: 60vh; overflow-y: auto; border-radius: 8px; padding: 1rem;"></div>
-                    <form id="chat-form" style="margin-top: 1rem;">
-                        <input style="height: 5vh; border-radius: 51px; width: 18vw;" id="chat-input" type="text" placeholder="Type your message...">
-                        <button style="height: 5vh; width: 4vw; border-radius: 7px;" type="submit">Send</button>
-                    </form>
+                 <div id="polls">
+    <div id="create-poll">
+      
+      <button onclick="showPollForm()">+</button>
+      <div id="input-container" style='display: none;'>
+        <input id="pollTitle" class="focus-input" type="text" placeholder="Ask question..." autocomplete="off">
+        <div class="options-container" id="optionsContainer">
+          <input class="focus-input pollOption" type="text" placeholder="+ Add">
+          <input class="focus-input pollOption" type="text" placeholder="+ Add"  oninput="addNewField(this)">
+        </div>
+        
+      </div>
+      <!-- <button style="margin-left: 19vw;margin-top:1vh; background-color:#00ff6a" onclick="createPoll()"></button> -->
+      <button 
+      style="
+        margin-left: 19vw;
+        margin-top: 1vh;
+        background-color: #00ff6a;
+        width: 35px; /* Set width */
+        height: 35px; /* Set height */
+        border-radius: 30%; /* Makes the button circular */
+        border: none; /* Removes the border */
+        display: flex; /* Centers content inside */
+        align-items: center; /* Vertically centers content */
+        justify-content: center; /* Horizontally centers content */
+        cursor: pointer; /* Adds pointer cursor on hover */
+        color:black
+      " 
+      onclick="createPoll()"
+    >send</button>
+    
 
-                    <!-- Add this inside your #chat-container div -->
-<form id="file-form" style="margin-top: 1rem;">
-    <input id="file-input" type="file">
-    <button id="file-send-button" type="submit">Send File</button>
-</form>
+    </div>
+
+    <div id='poll-render'>
+
+    </div>
+
+  </div>
 
                 </div>
+                
+                
+
+                <!-- this is chat block-->
+
+                <div id="chat-container"  style="display: none; position: absolute; bottom: 10px; right: 0; padding: 1rem; flex-direction: column; ">
+                    <div id="chat-box" style="height: 60vh; overflow-y: auto; border-radius: 8px; padding: 1rem;"></div>
+                    <form id="chat-form" style="margin-top: 1rem;">
+                        
+
+                        <div style="width: 100%; display: flex; align-items: center;">
+                            
+                            <div style="position: relative; width: 18vw; margin-right: 16px;">
+                                <textarea style="overflow-x: auto; background-color: #2b3842; color: white; height: 5vh; border-radius: 51px; width: 111%; border: none; padding-right: 3vw; resize: none; box-sizing: border-box;" 
+                  id="chat-input" placeholder="Type your message..."></textarea>
+
+                                <button style=" position: absolute; right: 0.2vw; top: 50%; transform: translateY(-50%); background-color: #2b3842; color: white; border: none; border-radius: 50%; height:5vh; ">
+                                    +
+                                </button>
+                            </div>
+
+                            <button style="background-color: #2b3842; height: 6vh; width: 3vw; border-radius:32px; margin-left: 1vw;" type="submit">
+                                <img src="902731501556277131.svg" alt="">
+                            </button>
+                        </div>
+                        
+                    </form>
+
+                   
+                            <form id="file-form" style="margin-top: 1rem;">
+                            <input id="file-input" type="file">
+                             <button  style="width: 4vw; height: 5vh;" id="file-send-button" type="submit">Submit</button>
+                            </form>
+                </div>
+
+
             </div>
         </div>
     </div>
+
+ <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
+  <script>
+
+function addNewField(inputElement) {
+    const container = document.getElementById('optionsContainer');
+    
+  
+    if (inputElement.value !== '' && inputElement === container.lastElementChild) {
+        const newInput = document.createElement('input');
+        newInput.classList.add('focus-input', 'pollOption');
+        newInput.type = 'text';
+        newInput.placeholder = '+ Add';
+        
+        newInput.addEventListener('input', function() {
+            addNewField(this);
+        });
+        
+        
+        container.appendChild(newInput);
+    }
+}
+
+
+    const socket = io('/polling');
+
+    let currentVotes = {}; // Track current votes per poll
+
+    socket.on('initialPolls', (polls) => {
+      console.log('Initial polls:', polls);
+      renderPolls(polls);
+    });
+
+    socket.on('newPoll', (poll) => {
+      console.log('New poll:', poll);
+      renderPoll(poll);
+    });
+
+    socket.on('updatePoll', (poll) => {
+      console.log('Updated poll:', poll);
+      updatePoll(poll);
+    });
+
+    function showPollForm() {
+      document.getElementById('input-container').style.display = 'block';
+    }
+
+    function createPoll() {
+      const title = document.getElementById('pollTitle').value;
+      const options = Array.from(document.querySelectorAll('.pollOption'))
+        .map(input => input.value.trim())
+        .filter(value => value);
+      
+      if (title && options.length >= 2) {
+        const poll = {
+          id: Date.now().toString(),
+          title,
+          options,
+          votes: {}
+        };
+        socket.emit('createPoll', poll);
+        resetPollForm();
+      }
+    }
+
+    function resetPollForm() {
+      document.getElementById('pollTitle').value = '';
+      const optionsContainer = document.getElementById('optionsContainer');
+      while (optionsContainer.children.length > 2) {
+        optionsContainer.removeChild(optionsContainer.lastChild);
+      }
+      document.querySelectorAll('.pollOption').forEach(option => option.value = '');
+    }
+
+    function renderPolls(polls) {
+      polls.forEach(renderPoll);
+    }
+
+    function renderPoll(poll) {
+  const pollsDiv = document.getElementById('poll-render');
+  const pollDiv = document.createElement('div');
+  pollDiv.classList.add('poll');
+  pollDiv.id = `poll-${poll.id}`;
+
+  // Get the total number of votes
+  const totalVotes = Object.values(poll.votes).reduce((a, b) => a + b, 0);
+
+  // Create the HTML structure for the poll
+  pollDiv.innerHTML = `
+    <h3>${poll.title}</h3>
+    ${poll.options.map(option => {
+      const votes = poll.votes[option] || 0;
+      const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
+      return `
+        <div style="margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <button onclick="vote('${poll.id}', '${option}')" class="vote-button"> ${option}</button>
+            <span>Votes: ${votes}</span>
+          </div>
+          <div style="background-color: #ddd; border-radius: 4px; overflow: hidden; margin-top:0.5vh">
+            <div style="width: ${percentage}%; background-color: #4caf50; height: 6px;"></div>
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+
+  pollsDiv.appendChild(pollDiv);
+}
+
+
+    
+
+function updatePoll(poll) {
+  const existingPollDiv = document.getElementById(`poll-${poll.id}`);
+
+  if (existingPollDiv) {
+    // Get the total number of votes
+    const totalVotes = Object.values(poll.votes).reduce((a, b) => a + b, 0);
+
+    existingPollDiv.innerHTML = `
+      <h3>${poll.title}</h3>
+      ${poll.options.map(option => {
+        const votes = poll.votes[option] || 0;
+        const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
+        return `
+          <div style="margin-bottom: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <button onclick="vote('${poll.id}', '${option}')" class="vote-button"> ${option}</button>
+              <span>Votes: ${votes}</span>
+            </div>
+            <div style="background-color: #ddd; border-radius: 4px; overflow: hidden; margin-top:0.5vh">
+              <div style="width: ${percentage}%; background-color: #4caf50; height: 6px;"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    `;
+  }
+}
+
+    function vote(pollId, option) {
+      socket.emit('vote', { pollId, option });
+    }
+  </script>
+
 
     <script>
         function getRoomNumberFromUrl() {
@@ -261,11 +579,30 @@
 
         document.getElementById('polls').addEventListener('click', function() {
             setActiveTab('polls');
+            const pollsSection = document.getElementById('polling'); 
+            pollsSection.style.display = 'flex';
+            const chatSection = document.getElementById('chat-container'); 
+            chatSection.style.display = 'none';
         });
 
         document.getElementById('chat').addEventListener('click', function() {
             setActiveTab('chat');
+            const chatSection = document.getElementById('chat-container'); 
+            chatSection.style.display = 'flex';
+            const pollsSection = document.getElementById('polling'); 
+            pollsSection.style.display = 'none';
+            const inputSection=document.getElementById('input-container');
+            inputSection.style.display='none';
+            const buttonSection=document.getElementById('button3');
+            buttonSection.style.display='none';
         });
+
+        document.getElementById('create-poll').addEventListener('click',function(){
+            const inputSection=document.getElementById('input-container');
+            inputSection.style.display='flex';
+            const buttonSection=document.getElementById('button3');
+            buttonSection.style.display='flex';
+        })
 
         function setActiveTab(activeId) {
             const tabs = document.querySelectorAll('.tab');
@@ -275,8 +612,14 @@
             document.getElementById(activeId).classList.add('active');
         }
 
+       
+        
+        
 
-        (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+
+
+
+    (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -23250,6 +23593,45 @@ const roomName = window.location.pathname.split('/')[2]
 
 const socket = io("/vidCalling") //using same namespace here to esatblish connection between socket.io and socket.io-client
 
+//<--------------------------------------code for screen-sharing------------------------------------->
+document.getElementById('screen-share-button').addEventListener('click', () => {
+  console.log("clicked")
+  replaceWithScreenShare();
+});
+
+async function replaceWithScreenShare() {
+  try {
+      // Capture the screen stream
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false // You can include audio if needed
+      });
+      
+      // Get the video track from the screen stream
+      const screenVideoTrack = screenStream.getVideoTracks()[0];
+      localVideo.srcObject = screenStream
+      // Replace the current video track with the screen video track
+      await replaceProducerTrack(screenVideoTrack);
+
+  } catch (err) {
+      console.error("Error sharing screen: ", err);
+  }
+}
+
+//replaacing existing video track
+async function replaceProducerTrack(newTrack) {
+  if (videoProducer) { // Assuming `videoProducer` is your existing producer for the video track
+    
+      await videoProducer.replaceTrack({ track: newTrack });
+      console.log('Video track replaced with screen sharing track.');
+  } else {
+      console.error('No existing video producer found.');
+  }
+}
+
+
+
+
 //<----------------------------------------code for file sharing in rooms-------------------------------->
 const fileShare = io('/fileShare'); // using fileShare namespace 
 
@@ -23288,21 +23670,37 @@ fileShare.on('file-receive', ({ fileName, fileData }) => {
   
   const fileMessage = document.createElement('div');
   fileMessage.style.marginBottom = '1rem';
+  fileMessage.style.backgroundColor = '#333'; // Dark background color
+  fileMessage.style.color = '#fff'; // Light text color
+  fileMessage.style.padding = '10px'; // Padding around the message
+  fileMessage.style.borderRadius = '8px'; // Rounded corners
+  fileMessage.style.border = '1px solid #555'; // Slight border to distinguish
+  fileMessage.style.width = '20vw';
+
+  const fileNameElement = document.createElement('p');
+  fileNameElement.textContent = fileName;
+  fileNameElement.style.margin = '0'; // Remove margin
+  fileNameElement.style.fontWeight = 'bold'; // Bold font
 
   const downloadLink = document.createElement('a');
   downloadLink.href = url;
   downloadLink.download = fileName;
-  downloadLink.textContent = `Download ${fileName}`;
-  downloadLink.style.color = '#007bff';
-  downloadLink.style.textDecoration = 'none';
-  downloadLink.style.fontWeight = 'bold';
+  downloadLink.textContent = 'Download';
+  downloadLink.style.color = '#00ff6a'; // Green color for the download link
+  downloadLink.style.textDecoration = 'none'; // Remove underline
+  downloadLink.style.fontWeight = 'bold'; // Bold font
+  downloadLink.style.display = 'block'; // Display on a new line
+  downloadLink.style.marginTop = '5px'; // Space above the link
 
+  fileMessage.appendChild(fileNameElement);
   fileMessage.appendChild(downloadLink);
   chatBox.appendChild(fileMessage);
 
   // Scroll to the bottom of the chat box
   chatBox.scrollTop = chatBox.scrollHeight;
 });
+
+
 
 
 //<-------------------------------------chat functionality code------------------------------------------->
@@ -23317,13 +23715,49 @@ const sendChatMessage = (message) => {
   chatSocket.emit('chat-message', { message, roomName });
 };
 
-chatSocket.on('chat-message', ({ message, room }) => {
+// chatSocket.on('chat-message', ({ message, room }) => {
+//   if (room === roomName) {
+//     console.log("Received chat message:", message);
+//     const chatBox = document.getElementById('chat-box');
+//     chatBox.innerHTML += `<p>${message}</p>`;
+//   }
+// });
+
+
+chatSocket.on('chat-message', ({ message, room, sender }) => {
   if (room === roomName) {
-    console.log("Received chat message:", message);
-    const chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML += `<p>${message}</p>`;
+      console.log("Received chat message:", message);
+      const chatBox = document.getElementById('chat-box');
+
+      const chatMessage = document.createElement('div');
+      chatMessage.className = 'chat-message';
+
+      // Create the message bubble
+      const messageBubble = document.createElement('div');
+      messageBubble.className = sender === 'me' ? 'sender-message' : 'receiver-message';
+      messageBubble.textContent = message;
+
+      // Add a triangle for message bubble
+      const triangle = document.createElement('div');
+      triangle.className = 'message-triangle';
+      messageBubble.appendChild(triangle);
+
+      chatMessage.appendChild(messageBubble);
+
+      // Optionally add a timestamp
+      const timestamp = document.createElement('div');
+      timestamp.className = 'message-timestamp';
+      timestamp.textContent = new Date().toLocaleTimeString();
+      chatMessage.appendChild(timestamp);
+
+      chatBox.appendChild(chatMessage);
+
+      // Scroll to the bottom of the chat box
+      chatBox.scrollTop = chatBox.scrollHeight;
   }
 });
+
+
 
 document.getElementById('chat-form').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -23398,7 +23832,7 @@ const joinRoom = () => {
     
     rtpCapabilities = data.rtpCapabilities
 
-    createDevice()                               //creating device--> this will check whether our strean is suitable for transmission or not
+    createDevice()                               //creating device--> this will check whether our stream is suitable for transmission or not
   })
 }
 
@@ -23435,7 +23869,7 @@ const createDevice = async () => {
     console.log('Device RTP Capabilities', device.rtpCapabilities)
 
   
-    createSendTransport()
+    createSendTransport()                   //initiating sendTransport
 
   } catch (error) {
     console.log(error)
@@ -23446,7 +23880,7 @@ const createDevice = async () => {
 
 const createSendTransport = () => {
 
-  socket.emit('createWebRtcTransport', { consumer: false }, ({ params }) => {
+  socket.emit('createWebRtcTransport', { consumer: false }, ({ params }) => { //emiitng event createWebRtcTransport to server wiht consumer being false info and asking for params from server
    
     if (params.error) {
       console.log(params.error)
@@ -23455,16 +23889,17 @@ const createSendTransport = () => {
 
     console.log(params)
 
-    producerTransport = device.createSendTransport(params)
+    producerTransport = device.createSendTransport(params) // Using Mediasoup device instance to create a send transport using the parameters provided by the server.
 
+    //sending dtls paramns back to the the server for establishing the transport connection 
     producerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
       try {
 
         await socket.emit('transport-connect', {
-          dtlsParameters,
+          dtlsParameters,                           //sending dtls to sever
         })
 
-        callback()
+        callback()                    //for signalling connection process was successful
 
       } catch (error) {
         errback(error)
@@ -23480,9 +23915,9 @@ const createSendTransport = () => {
           kind: parameters.kind,
           rtpParameters: parameters.rtpParameters,
           appData: parameters.appData,
-        }, ({ id, producersExist }) => {
+        }, ({ id, producersExist }) => {      //callback function to handle server's response
        
-          callback({ id })
+          callback({ id })            //calls the callback with producer id to confirm media prod req was sucess
           if (producersExist) getProducers()
         })
       } catch (error) {
@@ -23496,14 +23931,14 @@ const createSendTransport = () => {
 
 const connectSendTransport = async () => {
 
-  
+  //creaating audio and video transfer using params
   audioProducer = await producerTransport.produce(audioParams);
   videoProducer = await producerTransport.produce(videoParams);
 
   audioProducer.on('trackended', () => {
     console.log('audio track ended')
 
-
+z
   })
 
   audioProducer.on('transportclose', () => {
@@ -23638,7 +24073,6 @@ socket.on('producer-closed', ({ remoteProducerId }) => {
   videoContainer.removeChild(document.getElementById(`td-${remoteProducerId}`))
 })
 },{"mediasoup-client":70,"socket.io-client":85}]},{},[100]);
-
 
             
 

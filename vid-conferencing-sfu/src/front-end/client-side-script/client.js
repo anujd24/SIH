@@ -7,6 +7,48 @@ const roomName = window.location.pathname.split('/')[2]
 
 
 const socket = io("/vidCalling") //using same namespace here to esatblish connection between socket.io and socket.io-client
+//<----------------------------------------polling----------------------------------------------------------------->
+
+
+
+//<--------------------------------------code for screen-sharing------------------------------------->
+document.getElementById('screen-share-button').addEventListener('click', () => {
+  console.log("clicked")
+  replaceWithScreenShare();
+});
+
+async function replaceWithScreenShare() {
+  try {
+      // Capture the screen stream
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: false // You can include audio if needed
+      });
+      
+      // Get the video track from the screen stream
+      const screenVideoTrack = screenStream.getVideoTracks()[0];
+      localVideo.srcObject = screenStream
+      // Replace the current video track with the screen video track
+      await replaceProducerTrack(screenVideoTrack);
+
+  } catch (err) {
+      console.error("Error sharing screen: ", err);
+  }
+}
+
+//replacing existing video track
+async function replaceProducerTrack(newTrack) {
+  if (videoProducer) { // Assuming `videoProducer` is your existing producer for the video track
+    
+      await videoProducer.replaceTrack({ track: newTrack });
+      console.log('Video track replaced with screen sharing track.');
+  } else {
+      console.error('No existing video producer found.');
+  }
+}
+
+
+
 
 //<----------------------------------------code for file sharing in rooms-------------------------------->
 const fileShare = io('/fileShare'); // using fileShare namespace 
@@ -46,21 +88,37 @@ fileShare.on('file-receive', ({ fileName, fileData }) => {
   
   const fileMessage = document.createElement('div');
   fileMessage.style.marginBottom = '1rem';
+  fileMessage.style.backgroundColor = '#333'; // Dark background color
+  fileMessage.style.color = '#fff'; // Light text color
+  fileMessage.style.padding = '10px'; // Padding around the message
+  fileMessage.style.borderRadius = '8px'; // Rounded corners
+  fileMessage.style.border = '1px solid #555'; // Slight border to distinguish
+  fileMessage.style.width = '20vw';
+
+  const fileNameElement = document.createElement('p');
+  fileNameElement.textContent = fileName;
+  fileNameElement.style.margin = '0'; // Remove margin
+  fileNameElement.style.fontWeight = 'bold'; // Bold font
 
   const downloadLink = document.createElement('a');
   downloadLink.href = url;
   downloadLink.download = fileName;
-  downloadLink.textContent = `Download ${fileName}`;
-  downloadLink.style.color = '#007bff';
-  downloadLink.style.textDecoration = 'none';
-  downloadLink.style.fontWeight = 'bold';
+  downloadLink.textContent = 'Download';
+  downloadLink.style.color = '#00ff6a'; // Green color for the download link
+  downloadLink.style.textDecoration = 'none'; // Remove underline
+  downloadLink.style.fontWeight = 'bold'; // Bold font
+  downloadLink.style.display = 'block'; // Display on a new line
+  downloadLink.style.marginTop = '5px'; // Space above the link
 
+  fileMessage.appendChild(fileNameElement);
   fileMessage.appendChild(downloadLink);
   chatBox.appendChild(fileMessage);
 
   // Scroll to the bottom of the chat box
   chatBox.scrollTop = chatBox.scrollHeight;
 });
+
+
 
 
 //<-------------------------------------chat functionality code------------------------------------------->
@@ -75,13 +133,40 @@ const sendChatMessage = (message) => {
   chatSocket.emit('chat-message', { message, roomName });
 };
 
-chatSocket.on('chat-message', ({ message, room }) => {
+chatSocket.on('chat-message', ({ message, room, sender }) => {
   if (room === roomName) {
-    console.log("Received chat message:", message);
-    const chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML += `<p>${message}</p>`;
+      console.log("Received chat message:", message);
+      const chatBox = document.getElementById('chat-box');
+
+      const chatMessage = document.createElement('div');
+      chatMessage.className = 'chat-message';
+
+      // Create the message bubble
+      const messageBubble = document.createElement('div');
+      messageBubble.className = sender === 'me' ? 'sender-message' : 'receiver-message';
+      messageBubble.textContent = message;
+
+      // Add a triangle for message bubble
+      const triangle = document.createElement('div');
+      triangle.className = 'message-triangle';
+      messageBubble.appendChild(triangle);
+
+      chatMessage.appendChild(messageBubble);
+
+      // Optionally add a timestamp
+      const timestamp = document.createElement('div');
+      timestamp.className = 'message-timestamp';
+      timestamp.textContent = new Date().toLocaleTimeString();
+      chatMessage.appendChild(timestamp);
+
+      chatBox.appendChild(chatMessage);
+
+      // Scroll to the bottom of the chat box
+      chatBox.scrollTop = chatBox.scrollHeight;
   }
 });
+
+
 
 document.getElementById('chat-form').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -156,7 +241,7 @@ const joinRoom = () => {
     
     rtpCapabilities = data.rtpCapabilities
 
-    createDevice()                               //creating device--> this will check whether our strean is suitable for transmission or not
+    createDevice()                               //creating device--> this will check whether our stream is suitable for transmission or not
   })
 }
 
@@ -193,7 +278,7 @@ const createDevice = async () => {
     console.log('Device RTP Capabilities', device.rtpCapabilities)
 
   
-    createSendTransport()
+    createSendTransport()                   //initiating sendTransport
 
   } catch (error) {
     console.log(error)
@@ -204,7 +289,7 @@ const createDevice = async () => {
 
 const createSendTransport = () => {
 
-  socket.emit('createWebRtcTransport', { consumer: false }, ({ params }) => {
+  socket.emit('createWebRtcTransport', { consumer: false }, ({ params }) => { //emiitng event createWebRtcTransport to server wiht consumer being false info and asking for params from server
    
     if (params.error) {
       console.log(params.error)
@@ -213,16 +298,17 @@ const createSendTransport = () => {
 
     console.log(params)
 
-    producerTransport = device.createSendTransport(params)
+    producerTransport = device.createSendTransport(params) // Using Mediasoup device instance to create a send transport using the parameters provided by the server.
 
+    //sending dtls paramns back to the the server for establishing the transport connection 
     producerTransport.on('connect', async ({ dtlsParameters }, callback, errback) => {
       try {
 
         await socket.emit('transport-connect', {
-          dtlsParameters,
+          dtlsParameters,                           //sending dtls to sever
         })
 
-        callback()
+        callback()                    //for signalling connection process was successful
 
       } catch (error) {
         errback(error)
@@ -238,9 +324,9 @@ const createSendTransport = () => {
           kind: parameters.kind,
           rtpParameters: parameters.rtpParameters,
           appData: parameters.appData,
-        }, ({ id, producersExist }) => {
+        }, ({ id, producersExist }) => {      //callback function to handle server's response
        
-          callback({ id })
+          callback({ id })            //calls the callback with producer id to confirm media prod req was sucess
           if (producersExist) getProducers()
         })
       } catch (error) {
@@ -254,14 +340,14 @@ const createSendTransport = () => {
 
 const connectSendTransport = async () => {
 
-  
+  //creaating audio and video transfer using params
   audioProducer = await producerTransport.produce(audioParams);
   videoProducer = await producerTransport.produce(videoParams);
 
   audioProducer.on('trackended', () => {
     console.log('audio track ended')
 
-
+z
   })
 
   audioProducer.on('transportclose', () => {

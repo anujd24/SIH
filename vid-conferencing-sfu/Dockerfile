@@ -32,12 +32,22 @@ COPY src/front-end/html/home.html /app
 COPY src/front-end/html/room.html /app
 COPY src/front-end/css/home_style.css /app
 COPY src/front-end/css/room_style.css /app
+COPY src/front-end/css/sign-in_style.css /app
 
+COPY src/front-end/html/sign-in.html /app
 
 COPY src/front-end/client-side-script/bundle.js /app
 COPY src/front-end/client-side-script/client.js /app
 
+COPY src/front-end/client-side-script/sign-in.js /app
+COPY src/front-end/client-side-script/searchBar.js /app
+COPY src/front-end/html/searchBar.html /app
 
+COPY src/server/config/Mongooseconnection.js /app
+COPY src/server/controllers/Authication.js /app
+COPY src/server/controllers/UserAuth.js /app
+COPY src/server/middleware/Middleware.js /app
+COPY src/server/utils/generateToken.js /app
 
 EXPOSE 3000
 EXPOSE 2000-2050

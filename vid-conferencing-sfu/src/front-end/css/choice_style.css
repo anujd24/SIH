@@ -1,0 +1,109 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background-image: url("../assets/bg.avif"); /* Replace with your image URL */
+  background-size: cover; /* Cover the entire background */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+}
+/* Navbar */
+iframe {
+  position: sticky;
+  top: 0;
+  border: none;
+  z-index: 1000;
+}
+/* Card section */
+.choice-container {
+  margin: auto;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 400px;
+  width: 60%;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.086);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.container {
+  position: relative;
+  width: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 30px;
+}
+
+.container .card {
+  position: relative;
+  max-width: 300px;
+  height: 200px;
+  background-color: #ffffff28;
+  margin: 30px 10px;
+  padding: 20px 15px;
+
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  transition: 0.3s ease-in-out;
+  border-radius: 15px;
+}
+.container .card:hover {
+  height: 260px;
+}
+
+a {
+  color: #111;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  cursor: pointer;
+}
+.container .card .image {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  top: -40%;
+  left: 8px;
+  background-color: rgba(255, 255, 255, 0.79);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  z-index: 1;
+}
+
+.container .card .image img {
+  max-width: 100%;
+  border-radius: 15px;
+}
+
+.container .card .content {
+  position: relative;
+  top: -140px;
+  padding: 10px 15px;
+  color: #111;
+  text-align: left;
+  size: 40px;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
+.container .card:hover .content {
+  margin-top: 70px;
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+/* Footer */

@@ -4,4 +4,28 @@
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+    box-sizing: border-box;
+}
+
+:root{
+    --container-color:#1a1e21;
+    --second-color: #fd8f44;
+}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+img{
+    width: 100%;  
+}
+
+section{
+    padding: 3rem 0 2rem;
 }

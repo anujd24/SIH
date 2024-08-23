@@ -278,3 +278,61 @@ header.Shadow .logo{
     object-fit: cover;
     object-position: center;
 }
+
+.post-content{
+    margin-top: 12rem !important;
+}
+
+.sub-heading{
+    font-size: 1.2rem;
+}
+
+.post-text{
+    font-size: 1 rem;
+    line-height: 1.7rem;
+    margin: 1rem 0;
+    text-align: justify;
+}
+
+.share{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
+}
+
+.share-title{
+    font-size: 1.1rem;
+}
+
+@media (max-width: 800px){
+    .nav{
+        padding: 10px 0;
+    }
+    section{
+        padding: 2rem 0;
+    }
+
+    .header-content{
+        margin-top : 3rem !important;
+
+    }
+    .home{
+        min-height: 380px;
+    }
+    .home-title{
+        font-size:3rem;
+    }
+    .header-title{
+        font-size: 2rem;
+    }
+    .header-image{
+        height: 370px;
+    }
+    .post-header{
+        height: 435px;
+    }
+    .post-content{
+        margin-top: 9rem !important;
+    }
+}

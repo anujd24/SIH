@@ -5,17 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/blog.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
-    <title>Document</title>
+    <title>Blog</title>
 </head>
 <body>
 <header>
     <div class="nav container">
         <a href="#" class="logo">he<span>llo</span></a>
-
         <a href="#" class="login">Login</a>  
     </div>
-    
 </header>
 
 <section class="home" id="home">
@@ -33,142 +30,29 @@
 </div>
 
 <section class="post container">
-    <div class="post-box tech">
-        <img src="../images/post-1.jpg" alt="" class="post-img">
-        <h2 class="category">Tech</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
+</section>
 
-        <div class="profile">
-            <img src="../images/profile-1.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
+<section class="new-post container">
+    <h2>Add a New Post</h2>
+    <form id="new-post-form">
+        <label for="post-title">Title:</label>
+        <input type="text" id="post-title" name="title" required>
 
-    <div class="post-box marketing">
-        <img src="../images/post-2.jpg" alt="" class="post-img">
-        <h2 class="category">Marketing</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
+        <label for="post-content">Content:</label>
+        <textarea id="post-content" name="content" required></textarea>
 
-        <div class="profile">
-            <img src="../images/profile-2.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
+        <label for="post-author">Author:</label>
+        <input type="text" id="post-author" name="author" required>
 
-    <div class="post-box design">
-        <img src="../images/post-3.jpg" alt="" class="post-img">
-        <h2 class="category">Design</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
+        <label for="post-category">Category:</label>
+        <select id="post-category" name="category" required>
+            <option value="tech">Tech</option>
+            <option value="marketing">Marketing</option>
+            <option value="design">Design</option>
+        </select>
 
-        <div class="profile">
-            <img src="../images/profile-3.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
-
-   
-
-    <div class="post-box tech">
-        <img src="../images/post-1.jpg" alt="" class="post-img">
-        <h2 class="category">Tech</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
-
-        <div class="profile">
-            <img src="../images/profile-1.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
-
-    <div class="post-box design">
-        <img src="../images/post-2.jpg" alt="" class="post-img">
-        <h2 class="category">Design</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
-
-        <div class="profile">
-            <img src="../images/profile-2.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
-
-    <div class="post-box marketing">
-        <img src="../images/post-3.jpg" alt="" class="post-img">
-        <h2 class="category">Marketing</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
-
-        <div class="profile">
-            <img src="../images/profile-3.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
-
-    <div class="post-box tech">
-        <img src="../images/post-1.jpg" alt="" class="post-img">
-        <h2 class="category">Tech</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
-
-        <div class="profile">
-            <img src="../images/profile-1.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
-
-    <div class="post-box Design">
-        <img src="../images/post-2.jpg" alt="" class="post-img">
-        <h2 class="category">Design</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
-
-        <div class="profile">
-            <img src="../images/profile-2.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
-
-    <div class="post-box tech">
-        <img src="../images/post-3.jpg" alt="" class="post-img">
-        <h2 class="category">Tech</h2>
-        <a href="post-page.html" class="post-title">
-            How to create UI/UX design with Figma
-        </a>
-        <span class="post-date">20 May 2024</span>
-        <p class="post-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, error dignissimos voluptatum asperiores consectetur tenetur laboriosam nulla ducimus amet iusto eos consequatur officia. Velit natus nostrum odit iure quaerat aut.</p>
-
-        <div class="profile">
-            <img src="../images/profile-3.jpg" alt="" class="profile-img">
-            <span class="profile-name">Anuj Dubey</span>
-        </div>
-    </div>
+        <button type="submit">Submit</button>
+    </form>
 </section>
 
 <div class="footer container">
